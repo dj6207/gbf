@@ -1,0 +1,12 @@
+# train: path
+# val: path
+
+# Number of classes
+nc:
+
+# Class Name
+names: ['Loading Screen', 'Battle Screen', 'Auto Button', 'Enemey', 
+        'Sarasa', 'Ground Zero', 'Browser', 'Attack Button', 'MC',
+        'Character Slot 1', 'Character Slot 2', 'Character Slot 3', 
+        'Character Slot 4', 'King Gold Slime', 'King Silver Slime', 'Slime Swarm'
+        ]
