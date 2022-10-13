@@ -1,8 +1,11 @@
 # train: path
 # val: path
+train: C:/Users/Devin/Documents/VScode/gbf/dataset/images/
+val: C:/Users/Devin/Documents/VScode/gbf/dataset/images/
 
 # Number of classes
-nc: 41
+nc: 54
+# Need to doubled check nc
 
 # Class Name
 names: ['Loading Screen', 'Battle Screen', 'Auto Button', 'Enemy', 
@@ -15,5 +18,8 @@ names: ['Loading Screen', 'Battle Screen', 'Auto Button', 'Enemy',
         'Nobiyo', 'Quick Summon', 'Wave 1/2', 'Wave 2/2', 'Network Error',
         'Ok', 'Play Again', 'Home Screen', 'Quest Button', 'Next Button'
         'Skill On CD', 'Back Button', 'Turn Number', 'Reload Button',
-        'Home Button'
+        'Home Button', 'Your Turn', 'Slime Quest 30 AP', 'Slime Quest 15 AP',
+        'Slime Quest 10 AP', 'Play', 'FA Enabled', 'FA Disabled',
+        'Skill Queue', 'Party Select Screen', 'Quest Select Screen',
+        'Summon Select Screen', 'Result Screen'
         ]

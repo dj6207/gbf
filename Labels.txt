@@ -1,0 +1,54 @@
+Loading Screen
+Battle Screen
+Auto Button
+Enemy
+Sarasa
+Ground Zero
+Browser
+Attack Button
+MC
+Character Slot 1
+Character Slot 2
+Character Slot 3
+Character Slot 4
+King Gold Slime
+King Silver Slime
+Slime Swarm
+White Rabbit
+Kaguya
+Black Rabbit
+Slime Quest
+AP Refill
+Captcha
+Skill Slot 1
+Skill Slot 2
+Skill Slot 3
+Skill Slot 4
+Friend Summon
+Nobiyo
+Quick Summon
+Wave 1/2
+Wave 2/2
+Network Error
+Ok
+Play Again
+Home Screen
+Quest Button
+Next Button
+Skill On CD
+Back Button
+Turn Number
+Reload Button
+Home Button
+Your Turn
+Slime Quest 30 AP
+Slime Quest 15 AP
+Slime Quest 10 AP
+Play
+FA Enabled
+FA Disabled
+Skill Queue
+Party Select Screen
+Quest Select Screen
+Summon Select Screen
+Result Screen
