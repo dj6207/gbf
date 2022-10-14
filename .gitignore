@@ -1,6 +1,9 @@
 .venv/
 yolov5/
 test/
+dataset/
+images/
+__pycache__/
 
 *.pt
 *.zip
