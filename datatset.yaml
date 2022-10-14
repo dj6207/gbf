@@ -1,0 +1,65 @@
+# train: path
+# val: path
+train: ../dataset/images/
+val: ../dataset/images/
+
+# Number of classes
+nc: 54
+# Need to doubled check nc
+
+# Class Name
+names:
+  0: Loading Screen
+  1: Battle Screen
+  2: Auto Button
+  3: Enemy
+  4: Sarasa
+  5: Ground Zero
+  6: Browser
+  7: Attack Button
+  8: MC
+  9: Character Slot 1
+  10: Character Slot 2
+  11: Character Slot 3
+  12: Character Slot 4
+  13: King Gold Slime
+  14: King Silver Slime
+  15: Slime Swarm
+  16: White Rabbit
+  17: Kaguya
+  18: Black Rabbit
+  19: Slime Quest
+  20: AP Refill
+  21: Captcha
+  22: Skill Slot 1
+  23: Skill Slot 2
+  24: Skill Slot 3
+  25: Skill Slot 4
+  26: Friend Summon
+  27: Nobiyo
+  28: Quick Summon
+  29: Wave 1/2
+  30: Wave 2/2
+  31: Network Error
+  32: Ok
+  33: Play Again
+  34: Home Screen
+  35: Quest Button
+  36: Next Button
+  37: Skill On CD
+  38: Back Button
+  39: Turn Number
+  40: Reload Button
+  41: Home Button
+  42: Your Turn
+  43: Slime Quest 30 AP
+  44: Slime Quest 15 AP
+  45: Slime Quest 10 AP
+  46: Play
+  47: FA Enabled
+  48: FA Disabled
+  49: Skill Queue
+  50: Party Select Screen
+  51: Quest Select Screen
+  52: Summon Select Screen
+  53: Result Screen
