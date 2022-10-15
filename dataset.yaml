@@ -1,7 +1,7 @@
 # train: path
 # val: path
-train: ../dataset/images/
-val: ../dataset/images/
+train: ../data/dataset/dataset2/images/
+val: ../data/dataset/dataset2/images/
 
 # Number of classes
 nc: 54
