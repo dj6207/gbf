@@ -52,3 +52,25 @@ Party Select Screen
 Quest Select Screen
 Summon Select Screen
 Result Screen
+
+
+Loading Screen
+Reload Button
+Back Button
+Battle Screen
+Browser
+Summon Select Screen
+Kaguya
+Nobiyo
+White Rabbit
+Black Rabbit
+Party Select Screen
+Ok Button
+Sarasa
+Lunalu
+Skill Select Screen
+Facsimile
+Ground Zero
+Result Screen
+Play Again Button
+Summon
