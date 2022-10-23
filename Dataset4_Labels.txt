@@ -1,0 +1,18 @@
+Summon Select Screen
+Summon
+Kaguya
+Nobiyo
+White Rabbit
+Black Rabbit
+Party Select Screen
+Ok Button
+Sarasa
+Lunalu
+Skill Select Screen  
+Battle Screen
+Ground Zero
+Facsimile
+Result Screen
+Play Again Button
+Back Button
+Reload Button
