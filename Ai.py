@@ -1,6 +1,6 @@
-from tkinter import N
 import torch
 import cv2 as cv
+import pyautogui
 from queue import Queue
 from time import time
 from tools.winCapture import WindowCapture
@@ -74,13 +74,14 @@ class AI:
                 cv.putText(frame, f"{label} {str(row[4])[7:12]}", (x1, y1), cv.FONT_HERSHEY_SIMPLEX, 0.25, text_bgr, 1)
                 # print(labels[i])
                 if not item is None and label == item:
-                    print("label equal")
+                    # print(f"label equal{(label, row)}")
                     self.find_queue.put((label, row))
-                    return True
+                    # return True
                 else:
+                    # print(f"label_queue equal{(label, row)}")
                     self.label_queue.put((label, row))
         cv.imshow('GBF', frame)
-        return False
+        # return False
 
     # def ai_vision(self, screenshot, score_result, item=None):
         # screenshot  = self.wincap.get_screenshot()
@@ -93,13 +94,15 @@ class AI:
         current_checkpoint = self.cheakpoints[self.checkpoint_index]
         frame  = self.wincap.get_screenshot()
         score_result = self.score_frame(frame)
-        got_item = self.ai_vision(score_result, frame, current_checkpoint)
-        if got_item:
-            if self.checkpoint_index == 0:
+        self.ai_vision(score_result, frame, current_checkpoint)
+        if not self.find_queue.empty():
+            if self.checkpoint_index == 0: #Check point 1: Got to summon screen
                 self.Summon_Select()
             self.checkpoint_index += 1
-        self.label_queue.clear()
-        self.find_queue.clear()
+        self.label_queue.queue.clear()
+        # print(f"label q{self.label_queue.empty()}")
+        self.find_queue.queue.clear()
+        # print(f"find q{self.find_queue.empty()}")
 
         self.print_debug(loop_time)
         # Summon Screen
@@ -141,10 +144,31 @@ class AI:
         #loop through the queue to see if to see if queue has the desired summon
         #when first desired summon is found top loop
         #get the cords of desired summon and call click seletcted
+        summon = self.summons.copy()
+        # print(summon)
+        summon_dict = {"Kaguya": None, "Nobiyo": None, "White Rabbit": None, "Black Rabbit": None, "Summon": None}
+        for _ in range(self.label_queue.qsize()):
+            detected_label = self.label_queue.get()
+            # print(detected_label)
+            if detected_label[0] in summon:
+                # summon_dict[detected_label[0]] = detected_label[1] 
+                # print("updated")
+                summon_dict.update({detected_label[0]:detected_label[1]})
+                summon.remove(detected_label[0])
+        # print(summon_dict)
+        for summon in self.summons:
+            summon_cord = summon_dict[summon]
+            # print(summon_cord)
+            if not summon_cord is None:
+                self.click_selected(summon_cord)
+                return
+        summon_cord = summon_dict["Summon"]
+        self.click_selected(summon_cord)
         return
 
     def click_selected(self, cord):
-        print(cord)
+
+        print(f"Summon cord {cord}")
              
 
         
