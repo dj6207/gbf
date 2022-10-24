@@ -1,7 +1,6 @@
 import numpy as np
 import win32gui, win32ui, win32con
 import torch
-import cv2 as cv
 
 class WindowCapture:
 
@@ -16,20 +15,9 @@ class WindowCapture:
 
 
     # constructor
-    def __init__(self, model_path=None, window_name=None):
+    def __init__(self, window_name=None):
         # find the handle for the window we want to capture.
         # if no window name is given, capture the entire screen
-
-        if model_path is not None:
-            self.model = self.load_modal(model_path)
-            self.classes = self.model.names
-
-            if torch.cuda.is_available():
-                self.device = 'cuda'
-            else:
-                self.device = 'cpu'
-            print(f"Device: {self.device}")
-
         if window_name is None:
             self.hwnd = win32gui.GetDesktopWindow()
         else:
@@ -99,49 +87,6 @@ class WindowCapture:
         img = np.ascontiguousarray(img)
 
         return img
-
-    def score_frame(self, frame):
-        """
-        Takes a single frame as input, and scores the frame using yolo5 model.
-        :param frame: input frame in numpy/list/tuple format.
-        :return: Labels and Coordinates of objects detected by model in the frame.
-        """
-        self.model.to(self.device)
-        frame = [frame]
-        results = self.model(frame)
-     
-        labels, cord = results.xyxyn[0][:, -1], results.xyxyn[0][:, :-1]
-        return labels, cord
-
-    def class_to_label(self, x):
-        """
-        For a given label value, return corresponding string label.
-        :param x: numeric label
-        :return: corresponding string label
-        """
-        return self.classes[int(x)]
-
-    def plot_boxes(self, results, frame):
-        """
-        Takes a frame and its results as input, and plots the bounding boxes and label on to the frame.
-        :param results: contains labels and coordinates predicted by model on the given frame.
-        :param frame: Frame which has been scored.
-        :return: Frame with bounding boxes and labels ploted on it.
-        """
-        labels, cord = results
-        n = len(labels)
-        x_shape, y_shape = frame.shape[1], frame.shape[0]
-        for i in range(n):
-            row = cord[i]
-            if row[4] >= 0.5: #detection values curerntly 0.2
-                x1, y1, x2, y2 = int(row[0]*x_shape), int(row[1]*y_shape), int(row[2]*x_shape), int(row[3]*y_shape)
-                rectangle_bgr = (0, 255, 0)
-                text_bgr = (0, 0, 255)
-                cv.rectangle(frame, (x1, y1), (x2, y2), rectangle_bgr, 2)
-                # cv.putText(frame, self.class_to_label(labels[i]), (x1, y1), cv.FONT_HERSHEY_SIMPLEX, 0.9, bgr, 2)
-                cv.putText(frame, f"{self.class_to_label(labels[i])} {str(row[4])[7:12]}", (x1, y1), cv.FONT_HERSHEY_SIMPLEX, 0.25, text_bgr, 1)
-
-        return frame
 
     # find the name of the window you're interested in.
     # once you have it, update window_capture()
