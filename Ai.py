@@ -1,11 +1,16 @@
 import torch
 import cv2 as cv
 import pyautogui
+import threading
 from queue import Queue
-from time import time
+from time import sleep, time
 from tools.winCapture import WindowCapture
 
 class AI:
+
+    screen_x = 1920
+    screem_y = 1080
+
     def __init__(self, model_path="./yolov5/runs/google_cloud/exp25/weights/best.pt", browser_name="Granblue Fantasy - Google Chrome"):
         self.model = self.load_model(model_path)
         self.classes = self.model.names
@@ -21,7 +26,7 @@ class AI:
         self.browser_name = browser_name
         self.wincap = WindowCapture(self.browser_name)
         self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=self.model_path)
-        self.cheakpoints = ["Summon Select Screen", "Party Select Screen", "Battle Screen", "Result Screen"]
+        self.checkpoints = ["Summon Select Screen", "Party Select Screen", "Battle Screen", "Result Screen"]
         self.summons = ["Kaguya", "Nobiyo", "White Rabbit", "Black Rabbit", "Summon"]
     
     def load_model(self, model_path):
@@ -91,20 +96,22 @@ class AI:
         # cv.imshow('GBF', labeled_frame)
 
     def ai_neurons(self, loop_time):
-        current_checkpoint = self.cheakpoints[self.checkpoint_index]
+        current_checkpoint = self.checkpoints[self.checkpoint_index]
         frame  = self.wincap.get_screenshot()
         score_result = self.score_frame(frame)
         self.ai_vision(score_result, frame, current_checkpoint)
         if not self.find_queue.empty():
             if self.checkpoint_index == 0: #Check point 1: Got to summon screen
                 self.Summon_Select()
+            if self.checkpoint_index == 1: #Check point 2: On the party select screen
+                print()
             self.checkpoint_index += 1
         self.label_queue.queue.clear()
         # print(f"label q{self.label_queue.empty()}")
         self.find_queue.queue.clear()
         # print(f"find q{self.find_queue.empty()}")
 
-        self.print_debug(loop_time)
+        self.print_debug(loop_time=loop_time)
         # Summon Screen
         # Summon
         # Party Select Screen
@@ -166,14 +173,84 @@ class AI:
         self.click_selected(summon_cord)
         return
 
-    def click_selected(self, cord):
+    def Party_Select(self):
+        #during party select it is possible that my dumb ass fucking ai will see the cancel fucking button as an ok button
+        #bruh this shit even says it has a 97% confidence rating that this fucking cancel button is an ok
+        #dont feel like retrainig this bull shit so i might just hard code the clicking of the ok button
 
-        print(f"Summon cord {cord}")
+        #what to should ai look out for during party select screen
+        #all there is to do in this check point is to click the ok button
+        #if i remember correctly if you dont have enough ap the game will tell you to refill
+        #I guess if the next check point is not reach the program stops???
+        #or i can just hard code the location of where to press ok
+        #half the time my model have a hard time identifying what is a valid ok button
+        #prob just gonnna hard code it for now? ill think of something later
+
+        return
+
+    def Battle_Screen(self):
+        
+        #what to look out for during battle screen
+        #first sara ground zero has to be used first and then the back button has to be used 
+        #Sometimes the back buttton might kick you back to the fucking quest select screen
+        #That is def an issue but honestly i dont have a fix for that 
+        #prob another hard code issue to fix lol also dont feel like training another ai
+
+        #sometimes the god dam loading screen takes fucking forever
+        #curently my ai is not trained for loading screen 
+        #fix ???? honestly idk
+        #i guess i could have a longer wait time between each check point or something
+
+        #battle screen phase 2 this time lunalu's skill 1 or what ever needs to be clicked
+        #back button also needs to be pressed this time it will 99% of time take you to result screen
+
+        return
+
+    def Result_Screen(self):
+
+        #result screen last part of the slime process
+        #first thing you need to do is to click ok for the exp gained
+        #after that is where the everything goes down hill
+        #sometimes if you are sliming character for lvl 1 to 80 they can learn new skill in which you need to press ok again
+        #this can prob be solved just by ai detecting and clicking ok i guess but honestly i can trust my model to detect ok
+        #the next issue is when a character gain an emp level there does not exist and ok button for that one
+        #I guess i can just hard code something that clicks in the top of the screen until play again button can be seen ??? idk
+        #if all things go well we click play again
+        #if ap needed prob just hard code that shit
+
+        return
+
+    def click_selected(self, cord):
+        # tensor([0.07771, 0.54658, 0.39032, 0.62438, 0.98318], device='cuda:0')
+
+
+        x1 = cord[0].item()
+        y1 = cord[1].item()
+        x2 = cord[2].item()
+        y2 = cord[3].item()
+        #x1 and y1 is the pos of the top left cornor of an imaginary box
+        #x2 and y2 is the pos of the bottim right corner of an imaginary box
+        #calculate click x and y
+        #to get the mouse to move to the right position must multiply each x by half of resolution length since the browser will take up half the screen
+        x_cord = (x1 * (self.screen_x/2) + x2 * (self.screen_x/2))/2
+        #x_cord is a float
+        #multiply by the full resolution height since the browser will take the whole height
+        y_cord = (y1 * self.screem_y + y2 * self.screem_y)/2
+        # print(f"Moved to {x_cord}, {y_cord}")
+        pyautogui.moveTo(x=x_cord, y=y_cord)
+        self.print_debug(x_cord=x_cord, y_cord=y_cord)
+        pyautogui.click()
+        sleep(1.25)
              
 
         
 
 
 
-    def print_debug(self, loop_time):
-        print('FPS {}'.format(1 / (time() - loop_time)))
+    def print_debug(self, loop_time=None, x_cord=None, y_cord=None):
+        if (not loop_time is None):
+            print('FPS {}'.format(1 / (time() - loop_time)))
+        if (not x_cord is None and not y_cord is None):
+            print(f"Moved to ({x_cord}, {y_cord})")
+        print(self.checkpoints[self.checkpoint_index])
+        # print(self.checkpoint_index)
