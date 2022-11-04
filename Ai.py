@@ -103,9 +103,13 @@ class AI:
         if not self.find_queue.empty():
             if self.checkpoint_index == 0: #Check point 1: Got to summon screen
                 self.Summon_Select()
+                self.checkpoint_index += 1
             if self.checkpoint_index == 1: #Check point 2: On the party select screen
-                print()
-            self.checkpoint_index += 1
+                self.Party_Select()
+                self.checkpoint_index += 1
+            if self.checkpoint_index == 2:
+                self.Battle_Screen()
+                self.checkpoint_index += 1
         self.label_queue.queue.clear()
         # print(f"label q{self.label_queue.empty()}")
         self.find_queue.queue.clear()
@@ -131,6 +135,9 @@ class AI:
         # Replay
 
     def Summon_Select(self):
+
+        #Return: True/False  Success/Failure
+
         # summon_dict = {"Kaguya": None, "Nobiyo": None, "White Rabbit": None, "Black Rabbit": None, "Summon": None}
         # summon = self.summons.copy()
         # for i in range(len(labels)):
@@ -168,10 +175,14 @@ class AI:
             # print(summon_cord)
             if not summon_cord is None:
                 self.click_selected(summon_cord)
-                return
+                return True
         summon_cord = summon_dict["Summon"]
-        self.click_selected(summon_cord)
-        return
+        if summon_cord is None:
+            self.click_selected(summon_cord)
+            return True
+        else:
+            # print("No Summons detected")
+            return False
 
     def Party_Select(self):
         #during party select it is possible that my dumb ass fucking ai will see the cancel fucking button as an ok button
@@ -185,8 +196,25 @@ class AI:
         #or i can just hard code the location of where to press ok
         #half the time my model have a hard time identifying what is a valid ok button
         #prob just gonnna hard code it for now? ill think of something later
+        ok_cord = None
+        for _ in range(self.label_queue.qsize()):
+            detected_label = self.label_queue.get()
+            if detected_label[0] == "Ok Button":
+                ok_cord = detected_label[1]
+                self.click_selected(ok_cord)
+                return True
+        if ok_cord is None:
+            print("Ok Button not detected")
+            return False
 
-        return
+        #Need to add:
+        #If there ok button is not detected need to deal with that
+        #probalby will just end the program or something if there is no ok detected after like 20 or 30 seconds?
+
+        #Maybe add another funciton that adds all the labels to a list or something 
+        #check the confidence of each label
+        #the label with the highest confidence will be selected
+        #may or may not work since it is possible that i over lifted tht dam model so the confidence of each label might be fucked
 
     def Battle_Screen(self):
         
@@ -203,6 +231,8 @@ class AI:
 
         #battle screen phase 2 this time lunalu's skill 1 or what ever needs to be clicked
         #back button also needs to be pressed this time it will 99% of time take you to result screen
+        
+        
 
         return
 
